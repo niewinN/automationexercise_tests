@@ -12,29 +12,21 @@ export class Dialog extends BasePage {
     this.consentButtonInFrame = page
       .frameLocator('iframe')
       .getByRole('button', { name: /Consent|accept|agree/i });
-  }
-
-  async closeDialog(): Promise<void> {
-    try {
-        if (await this.consentButton.first().isVisible({ timeout: 3000 })) {
-        await this.consentButton.first().click();
-        console.log('Consent dialog closed (main DOM)');
-        return;
-        }
-    } catch (e) {
-        console.log('Consent dialog not found or not clickable (main DOM)');
     }
 
-    try {
-        if (await this.consentButtonInFrame.first().isVisible({ timeout: 3000 })) {
-        await this.consentButtonInFrame.first().click();
-        console.log('Consent dialog closed (iframe)');
-        return;
-        }
-    } catch (e) {
-        console.log('Consent dialog not found or not clickable (iframe)');
-    }
+    async closeDialog(): Promise<void> {
+        const timeout = 5000;
 
-    console.log('No consent dialog found');
+        try {
+            await this.consentButton.first().waitFor({ state: 'visible', timeout });
+            await this.consentButton.first().click();
+            return;
+        } catch {}
+
+        try {
+            await this.consentButtonInFrame.first().waitFor({ state: 'visible', timeout });
+            await this.consentButtonInFrame.first().click();
+            return;
+        } catch {}
     }
 }

@@ -4,14 +4,13 @@ import { RegisterUser } from '../utils/user-factory';
 
 
 export class RegisterPage extends BasePage {
-    readonly page: Page;
     readonly title: Locator;
     readonly newsletterCheckbox: Locator;
     readonly optinCheckbox: Locator;
 
     constructor(page: Page) {
         super(page)
-        this.page = page;
+
         this.title = page.getByText('Enter Account Information')
         this.newsletterCheckbox = page.locator('#newsletter')
         this.optinCheckbox = page.locator('#optin')
@@ -34,8 +33,8 @@ export class RegisterPage extends BasePage {
 
     async completeAddressDetails(user: RegisterUser): Promise<void> {
         await this.byQa('first_name').fill(user.name)
-        await this.byQa('last_name').fill(user.surname)
-        await this.byQa('company').fill(user.surname)
+        await this.byQa('last_name').fill(user.lastName)
+        await this.byQa('company').fill(user.company)
         await this.byQa('address').fill(user.street)
         await this.byQa('address2').fill(user.street)
         await this.byQa('state').fill(user.state)

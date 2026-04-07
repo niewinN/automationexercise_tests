@@ -18,7 +18,7 @@ export class UserApi {
                     birth_year: user.year,
                     firstname: user.firstName,
                     lastname: user.lastName,
-                    company: '',
+                    company: user.company,
                     address1: user.street,
                     address2: '',
                     country: 'India',
@@ -29,6 +29,28 @@ export class UserApi {
                 }
             }
         )
-        expect(response.ok()).toBeTruthy()
+        expect(response.status()).toBe(200);
+        const body = await response.json();
+        expect(body.responseCode).toBe(201);
+        expect(body.message).toContain('User created');
+    }
+
+    async deleteUser(user: RegisterUser): Promise<void> {
+        const response = await this.request.delete('https://automationexercise.com/api/deleteAccount', {
+            form: {
+                email: user.email,
+                password: user.password
+            }
+        })
+        expect(response.status()).toBe(200)
+        const body = await response.json()
+        expect(body.responseCode).toBe(200)
+        expect(body.message).toContain('Account deleted!')
+    }
+
+    async deleteUserIfExists(user: RegisterUser): Promise<void> {
+        try {
+            await this.deleteUser(user)
+        } catch {}
     }
 }

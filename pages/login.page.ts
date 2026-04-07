@@ -6,14 +6,16 @@ import { BasePage } from './base.page';
 export class LoginPage extends BasePage {
     readonly signupTitle: Locator;
     readonly loginTitle: Locator;
-    readonly errorMessage: Locator;
+    readonly loginErrorMessage: Locator;
+    readonly registerErrorMessage: Locator;
 
     constructor(page: Page) {
         super(page)
 
         this.signupTitle = page.getByText('New User Signup!'); 
         this.loginTitle = page.getByText('Login to your account')
-        this.errorMessage = page.getByText('Your email or password is incorrect!')
+        this.loginErrorMessage = page.getByText('Your email or password is incorrect!')
+        this.registerErrorMessage = page.getByText('Email Address already exist!')
     }
 
     async expectLoginSection(): Promise<void> {
@@ -41,7 +43,11 @@ export class LoginPage extends BasePage {
         await this.byQa('login-button').click()
     }
 
-    async expectErrorMessage(): Promise<void> {
-        await expect(this.errorMessage).toBeVisible()
+    async expectLoginErrorMessage(): Promise<void> {
+        await expect(this.loginErrorMessage).toBeVisible()
+    }
+
+    async expectRegisterErrorMessage(): Promise<void> {
+        await expect(this.registerErrorMessage).toBeVisible()
     }
 }

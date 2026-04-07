@@ -2,12 +2,12 @@ import { faker } from '@faker-js/faker';
 
 export type RegisterUser = {
   name: string;
-  surname: string;
   email: string;
   password: string;
   day: string;
   month: string;
   year: string;
+  company: string;
   firstName: string;
   lastName: string;
   street: string;
@@ -19,12 +19,12 @@ export type RegisterUser = {
 
 export const createUser = (): RegisterUser => ({
   name: faker.person.firstName(),
-  surname: faker.person.lastName(),
   email: faker.internet.email(),
   password: faker.internet.password(),
   day: '1',
   month: '1',
   year: '2000',
+  company: faker.person.jobTitle(),
   firstName: faker.person.firstName(),
   lastName: faker.person.lastName(),
   street: faker.location.streetAddress(),

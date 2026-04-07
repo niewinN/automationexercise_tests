@@ -8,6 +8,8 @@ export class MainPage extends BasePage {
     readonly dialog: Dialog;
     readonly loginLink: Locator;
     readonly deleteButton: Locator;
+    readonly logoutLink: Locator;
+    readonly contactUsLink: Locator;
 
     constructor(page: Page) {
         super(page)
@@ -16,6 +18,8 @@ export class MainPage extends BasePage {
         this.dialog = new Dialog(page)
         this.loginLink = page.getByRole('link', {name: 'Signup / Login'})
         this.deleteButton = page.getByRole('link', {name: 'Delete Account'})
+        this.logoutLink = page.getByRole('link', {name: ' Logout'})
+        this.contactUsLink = page.getByRole('link', {name: ' Contact us'})
     }
 
     async expectLoaded(): Promise<void> {
@@ -36,6 +40,19 @@ export class MainPage extends BasePage {
 
     async deleteAccount(): Promise<void> {
         await this.deleteButton.click()
+    }
+
+    async logoutUser(): Promise<void> {
+        await this.logoutLink.click()
+    }
+
+    async openLoginPage(): Promise<void> {
+        await this.expectLoaded()
+        await this.redirectToLoginPage()
+    }
+
+    async redirectToContactPage(): Promise<void> {
+        await this.contactUsLink.click()
     }
 
 }
