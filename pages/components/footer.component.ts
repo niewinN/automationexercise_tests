@@ -32,10 +32,10 @@ export class Footer extends BasePage {
         await expect(this.successSubcribe).toContainText('subscribed')
     }
 
-    async subscribe(email = faker.internet.email()): Promise<string> {
+    async subscribe(email = faker.internet.email()): Promise<void> {
         await this.expectSubscriptionSectionLoaded()
         await this.enterEmailToSubscribe(email)
         await this.expectSubscriptionSucces()
-        return email
+        // return email
     }
 }
