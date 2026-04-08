@@ -10,6 +10,9 @@ export class MainPage extends BasePage {
     readonly deleteButton: Locator;
     readonly logoutLink: Locator;
     readonly contactUsLink: Locator;
+    readonly testCasesLink: Locator;
+    readonly productsLink: Locator;
+    readonly cartLink: Locator;
 
     constructor(page: Page) {
         super(page)
@@ -20,6 +23,10 @@ export class MainPage extends BasePage {
         this.deleteButton = page.getByRole('link', {name: 'Delete Account'})
         this.logoutLink = page.getByRole('link', {name: ' Logout'})
         this.contactUsLink = page.getByRole('link', {name: ' Contact us'})
+        this.testCasesLink = page.getByRole('link', {name: ' Test Cases'}).first()
+        this.productsLink = page.getByRole('link', {name: ' Products'})
+        this.cartLink = page.getByRole('link', {name: ' Cart'})
+        
     }
 
     async expectLoaded(): Promise<void> {
@@ -55,4 +62,15 @@ export class MainPage extends BasePage {
         await this.contactUsLink.click()
     }
 
+    async redirectToTestCasesPage(): Promise<void> {
+        await this.testCasesLink.click()
+    }
+
+    async redirectToProductsPage(): Promise<void> {
+        await this.productsLink.click()
+    }
+
+    async redirectToCartPage(): Promise<void> {
+        await this.cartLink.click()
+    }
 }

@@ -6,6 +6,10 @@ import { SuccessPage } from '../pages/success.page';
 import { UserApi } from '../api/user.api';
 import { createUser, RegisterUser } from '../utils/user-factory';
 import { ContactPage } from '../pages/contact.page';
+import { TestCasesPage } from '../pages/test-cases.page';
+import { ProductsPage } from '../pages/products.page';
+import { ProductDetailsPage } from '../pages/product-details.page';
+import { Footer } from '../pages/components/footer.component';
 
 
 type Fixtures = {
@@ -16,6 +20,10 @@ type Fixtures = {
     userApi: UserApi;
     registeredUser: RegisterUser;
     contactPage: ContactPage;
+    testCasesPage: TestCasesPage;
+    productsPage: ProductsPage;
+    productDetailsPage: ProductDetailsPage;
+    footer: Footer;
 }
 
 export const test = base.extend<Fixtures>({
@@ -52,6 +60,22 @@ export const test = base.extend<Fixtures>({
 
     contactPage: async({page}, use) => {
         await use(new ContactPage(page))
+    },
+
+    testCasesPage: async({page}, use) => {
+        await use(new TestCasesPage(page))
+    },
+
+    productsPage: async({page}, use) => {
+        await use(new ProductsPage(page))
+    },
+
+    productDetailsPage: async({page}, use) => {
+        await use(new ProductDetailsPage(page))
+    },
+
+    footer: async({page}, use) => {
+        await use(new Footer(page))
     }
 })
 
