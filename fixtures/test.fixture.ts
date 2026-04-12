@@ -10,6 +10,8 @@ import { TestCasesPage } from '../pages/test-cases.page';
 import { ProductsPage } from '../pages/products.page';
 import { ProductDetailsPage } from '../pages/product-details.page';
 import { Footer } from '../pages/components/footer.component';
+import { Navigation } from '../pages/components/navigation.component';
+import { CartPage } from '../pages/cart.page';
 
 
 type Fixtures = {
@@ -24,6 +26,8 @@ type Fixtures = {
     productsPage: ProductsPage;
     productDetailsPage: ProductDetailsPage;
     footer: Footer;
+    navigation: Navigation;
+    cartPage: CartPage;
 }
 
 export const test = base.extend<Fixtures>({
@@ -76,6 +80,14 @@ export const test = base.extend<Fixtures>({
 
     footer: async({page}, use) => {
         await use(new Footer(page))
+    },
+
+    navigation: async({page}, use) => {
+        await use(new Navigation(page))
+    },
+
+    cartPage: async({page}, use) => {
+        await use(new CartPage(page))
     }
 })
 

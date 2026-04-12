@@ -1,5 +1,6 @@
 import { expect, Page, Locator } from '@playwright/test';
 import { BasePage } from './base.page';
+import { Product } from '../models/product';
 
 export class ProductsPage extends BasePage {
     readonly title: Locator;
@@ -8,6 +9,8 @@ export class ProductsPage extends BasePage {
     readonly viewProductLink: Locator;
     readonly searchProductInput: Locator;
     readonly searchButton: Locator;
+    readonly continueButton: Locator;
+    readonly viewCartButton: Locator;
 
     constructor(page: Page) {
         super(page)
@@ -18,6 +21,8 @@ export class ProductsPage extends BasePage {
         this.viewProductLink = page.getByText('View Product').first()
         this.searchProductInput = page.getByRole('textbox', {name: 'Search Product'})
         this.searchButton = page.locator('#submit_search')
+        this.continueButton = page.getByRole('button', {name: 'Continue Shopping'})
+        this.viewCartButton = page.getByRole('link', { name: 'View Cart' })
     }
 
     async expectLoaded(): Promise<void> {
@@ -34,23 +39,39 @@ export class ProductsPage extends BasePage {
         await this.viewProductLink.click()
     }
 
-    async openFirstProductAndGetData(): Promise<{name: string, price: string}> {
-        const firstProduct = this.productCards.first()
+    private parsePrice(priceText: string): number {
+        return Number(priceText.replace(/[^\d.]/g, ''));
+    }
 
-        const name = await firstProduct.locator('.single-products .productinfo p').textContent()
-        const price = await firstProduct.locator('.single-products .productinfo h2').textContent()
+    async getProductDataByIndex(index: number): Promise<Product> {
+        const card = this.productCards.nth(index)
 
-        expect(name).not.toBeNull()
-        expect(price).not.toBeNull()
+        const name = await card.locator('.single-products .productinfo p').textContent()
+        const priceText = await card.locator('.single-products .productinfo h2').textContent()
+
+        expect(name).toBeTruthy();
+        expect(priceText).toBeTruthy();
+
+        const priceValue = this.parsePrice(priceText!);
 
         const productData = {
             name: name!.trim(),
-            price: price!.trim()
+            quantity: 1,
+            priceText: priceText!,
+            priceValue,
+
         }
 
-        await this.redirectToProductDetails()
+        return productData
+    }
 
-        return productData;
+    async addProductToCartByIndex(index: number): Promise<Product> {
+        const card = this.productCards.nth(index)
+        const product = this.getProductDataByIndex(index)
+
+        await card.locator('.add-to-cart').first().click()
+
+        return product
     }
 
     async enterProductNameAndSearch(name: string): Promise<void> {
@@ -68,5 +89,13 @@ export class ProductsPage extends BasePage {
         for (const title of titles) {
             expect(title.toLowerCase()).toContain(name.toLowerCase())
         }  
+    }
+
+    async continueShopping(): Promise<void> {
+        await this.continueButton.click()
+    }
+
+    async viewCart(): Promise<void> {
+        await this.viewCartButton.click();
     }
 }
