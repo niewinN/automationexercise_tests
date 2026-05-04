@@ -12,6 +12,10 @@ import { ProductDetailsPage } from '../pages/product-details.page';
 import { Footer } from '../pages/components/footer.component';
 import { Navigation } from '../pages/components/navigation.component';
 import { CartPage } from '../pages/cart.page';
+import { CheckoutPage } from '../pages/checkout.page';
+import { PaymentPage } from '../pages/payment.page';
+import { createCard } from '../utils/card-factory';
+import { Card } from '../models/card';
 
 
 type Fixtures = {
@@ -28,6 +32,9 @@ type Fixtures = {
     footer: Footer;
     navigation: Navigation;
     cartPage: CartPage;
+    checkoutPage: CheckoutPage;
+    paymentPage: PaymentPage;
+    randomCard: Card;
 }
 
 export const test = base.extend<Fixtures>({
@@ -88,6 +95,19 @@ export const test = base.extend<Fixtures>({
 
     cartPage: async({page}, use) => {
         await use(new CartPage(page))
+    },
+
+    checkoutPage: async({page}, use) => {
+        await use(new CheckoutPage(page))
+    },
+
+    paymentPage: async({page}, use) => {
+        await use(new PaymentPage(page))
+    },
+
+    randomCard: async({}, use) => {
+        const card = createCard()
+        await use(card)
     }
 })
 

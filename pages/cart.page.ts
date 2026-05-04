@@ -1,15 +1,19 @@
-import { test, expect, Page, Locator } from '@playwright/test';
+import { expect, Page, Locator } from '@playwright/test';
 import { BasePage } from './base.page';
 import { Product } from '../models/product';
 
 
 export class CartPage extends BasePage {
     readonly cartRows: Locator;
+    readonly proceedToCheckoutBtn: Locator;
+    readonly registerLoginBtn: Locator;
 
     constructor(page: Page) {
         super(page)
 
         this.cartRows = page.locator('#cart_info_table tbody tr')
+        this.proceedToCheckoutBtn = page.locator('.check_out')
+        this.registerLoginBtn = page.getByRole('link', {name: 'Register / Login'})
     }
 
     private rowByProductName(name: string): Locator {
@@ -92,6 +96,20 @@ export class CartPage extends BasePage {
     async expectSingleProductQuantity(quantity: number): Promise<void> {
         await expect(this.cartRows).toHaveCount(1)
         await expect(this.cartRows.first().locator('.cart_quantity button')).toHaveText(String(quantity))
+    }
+
+    async proceedToCheckout(): Promise<void> {
+        await this.proceedToCheckoutBtn.click()
+    }
+
+    async redirectToRegisterLogin(): Promise<void> {
+        await this.registerLoginBtn.click()
+    }
+
+    async proceedAndRedirectToRegister(): Promise<void> {
+        await this.expectLoaded()
+        await this.proceedToCheckout()
+        await this.redirectToRegisterLogin()
     }
 
 

@@ -98,4 +98,11 @@ export class ProductsPage extends BasePage {
     async viewCart(): Promise<void> {
         await this.viewCartButton.click();
     }
+
+    async addTwoProductsAndContinue(): Promise<void> {
+        await this.addProductToCartByIndex(0)
+        await this.continueShopping()
+        await this.addProductToCartByIndex(1)
+        await this.continueShopping()
+    }
 }
