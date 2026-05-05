@@ -7,6 +7,7 @@ export class CartPage extends BasePage {
     readonly cartRows: Locator;
     readonly proceedToCheckoutBtn: Locator;
     readonly registerLoginBtn: Locator;
+    readonly removeProductBtn: Locator;
 
     constructor(page: Page) {
         super(page)
@@ -14,6 +15,7 @@ export class CartPage extends BasePage {
         this.cartRows = page.locator('#cart_info_table tbody tr')
         this.proceedToCheckoutBtn = page.locator('.check_out')
         this.registerLoginBtn = page.getByRole('link', {name: 'Register / Login'})
+        this.removeProductBtn = page.locator('.cart_quantity_delete')
     }
 
     private rowByProductName(name: string): Locator {
@@ -110,6 +112,18 @@ export class CartPage extends BasePage {
         await this.expectLoaded()
         await this.proceedToCheckout()
         await this.redirectToRegisterLogin()
+    }
+
+    async expectProductRemovedFromCart(): Promise<void> {
+        const count = await this.cartRows.count()
+        await this.removeProductBtn.first().click()
+
+        await expect(this.cartRows).toHaveCount(count - 1)
+    }
+
+    async expectProductsCount(count: number): Promise<void> {
+        await this.expectLoaded()
+        await expect(this.cartRows).toHaveCount(count)
     }
 
 
