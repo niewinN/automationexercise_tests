@@ -1,4 +1,4 @@
-import { test, expect, Page, Locator } from '@playwright/test';
+import { expect, Page, Locator } from '@playwright/test';
 import { BasePage } from './base.page';
 
 export class ProductDetailsPage extends BasePage {
@@ -6,6 +6,12 @@ export class ProductDetailsPage extends BasePage {
     readonly quantity: Locator;
     readonly addToCartButton: Locator;
     readonly viewCartButton: Locator;
+    readonly reviewTitle: Locator;
+    readonly inputName: Locator;
+    readonly emailInput: Locator;
+    readonly reviewInput: Locator;
+    readonly submitBtn: Locator;
+    readonly successAlert: Locator;
 
     constructor(page: Page) {
         super(page)
@@ -14,6 +20,12 @@ export class ProductDetailsPage extends BasePage {
         this.quantity = page.locator('#quantity')
         this.addToCartButton = page.getByRole('button', {name: 'Add to cart'})
         this.viewCartButton = page.getByRole('link', {name: 'View Cart'})
+        this.reviewTitle = page.locator('a[href="#reviews"]')
+        this.inputName = page.locator('#name')
+        this.emailInput = page.locator('#email')
+        this.reviewInput = page.locator('#review')
+        this.submitBtn = page.getByRole('button', {name: 'Submit'})
+        this.successAlert = page.locator('.alert-success')
     }
 
     async expectLoaded(): Promise<void> {
@@ -51,6 +63,21 @@ export class ProductDetailsPage extends BasePage {
         await this.viewCart()
 
         return quantity
+    }
+
+    async expectReviewTitleLoaded(): Promise<void> {
+        await expect(this.reviewTitle).toBeVisible()
+    }
+
+    async completeReviewForm(name: string, email: string, review: string): Promise<void> {
+        await this.inputName.fill(name)
+        await this.emailInput.fill(email)
+        await this.reviewInput.fill(review)
+        await this.submitBtn.click()
+    }
+
+    async expectReviewAdded(): Promise<void> {
+        await expect(this.successAlert.first()).toBeVisible()
     }
 }
 

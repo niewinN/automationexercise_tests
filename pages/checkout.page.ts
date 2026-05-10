@@ -1,11 +1,14 @@
 import {expect, Page, Locator } from '@playwright/test';
 import { BasePage } from './base.page';
+import { RegisterUser } from '../utils/user-factory';
 
 export class CheckoutPage extends BasePage {
     readonly addressHeading: Locator;
     readonly reviewHeading: Locator;
     readonly commentTextarea: Locator;
     readonly placeOrderBtn: Locator;
+    readonly deliveryAddress: Locator;
+    readonly billingAddress: Locator;
 
     constructor(page: Page) {
         super(page)
@@ -14,6 +17,8 @@ export class CheckoutPage extends BasePage {
         this.reviewHeading = page.getByRole('heading', {name: 'Review Your Order'})
         this.commentTextarea = page.locator('.form-control')
         this.placeOrderBtn = page.getByRole('link', {name: 'Place Order'})
+        this.deliveryAddress = page.locator('#address_delivery')
+        this.billingAddress = page.locator('#address_invoice')
     }
 
     async expectAddressLoaded(): Promise<void> {
@@ -45,5 +50,25 @@ export class CheckoutPage extends BasePage {
     async addCommentAfterLoaded(desc: string): Promise<void> {
         await this.expectSectionsLoaded()
         await this.addCommentAndPlaceOrder(desc)
+    }
+
+    async expectDeliveryAddress(user: RegisterUser): Promise<void> {
+        await expect(this.deliveryAddress).toContainText(`Mr. ${user.firstName} ${user.lastName}`)
+        await expect(this.deliveryAddress).toContainText(user.company);
+        await expect(this.deliveryAddress).toContainText(user.street);
+        await expect(this.deliveryAddress).toContainText(user.city);
+        await expect(this.deliveryAddress).toContainText(user.state);
+        await expect(this.deliveryAddress).toContainText(user.zipCode);
+        await expect(this.deliveryAddress).toContainText(user.phone);
+    }
+
+    async expectBillingAddress(user: RegisterUser): Promise<void> {
+        await expect(this.billingAddress).toContainText(`${user.firstName} ${user.lastName}`);
+        await expect(this.billingAddress).toContainText(user.company);
+        await expect(this.billingAddress).toContainText(user.street);
+        await expect(this.billingAddress).toContainText(user.city);
+        await expect(this.billingAddress).toContainText(user.state);
+        await expect(this.billingAddress).toContainText(user.zipCode);
+        await expect(this.billingAddress).toContainText(user.phone);
     }
 }

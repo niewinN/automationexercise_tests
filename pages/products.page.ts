@@ -24,6 +24,7 @@ export class ProductsPage extends BasePage {
     readonly bibaBrand: Locator;
     readonly bibaHeading: Locator;
     readonly addToCartBtn: Locator;
+    // readonly viewProductBtn: Locator;
 
     constructor(page: Page) {
         super(page)
@@ -49,6 +50,7 @@ export class ProductsPage extends BasePage {
         this.poloHeading = page.getByRole('heading', {name: 'Brand - Polo Products'})
         this.bibaHeading = page.getByRole('heading', {name: 'Brand - Biba Products'})
         this.addToCartBtn = page.locator('.productinfo .add-to-cart')
+        // this.viewProductBtn = page.getByRole('link', {name: 'View Product'})
     }
 
     async expectLoaded(): Promise<void> {
@@ -176,5 +178,9 @@ export class ProductsPage extends BasePage {
         await expect(this.poloHeading).toBeVisible()
         await this.bibaBrand.click()
         await expect(this.bibaHeading).toBeVisible()
+    }
+
+    async clickOnFirstViewProductLink(): Promise<void> {
+        await this.viewProductLink.click()
     }
 }
