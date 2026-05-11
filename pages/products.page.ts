@@ -50,7 +50,6 @@ export class ProductsPage extends BasePage {
         this.poloHeading = page.getByRole('heading', {name: 'Brand - Polo Products'})
         this.bibaHeading = page.getByRole('heading', {name: 'Brand - Biba Products'})
         this.addToCartBtn = page.locator('.productinfo .add-to-cart')
-        // this.viewProductBtn = page.getByRole('link', {name: 'View Product'})
     }
 
     async expectLoaded(): Promise<void> {

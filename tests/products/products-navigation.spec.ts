@@ -1,8 +1,7 @@
 import { test } from "../../fixtures/test.fixture";
 import { NavItem } from "../../pages/components/navigation.component";
 
-test('user can navigate to products page and product details page', async({mainPage, productsPage, productDetailsPage, navigation}) => {
-    await mainPage.expectLoaded()
+test('user can navigate to products page and product details page', async({productsPage, productDetailsPage, navigation}) => {
     await navigation.redirectTo(NavItem.Products)
     await productsPage.expectLoaded()
     await productsPage.expectProductListLoaded()

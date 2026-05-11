@@ -3,7 +3,6 @@ import { NavItem } from "../../pages/components/navigation.component";
 
 
 test('user can add products in cart', async({mainPage, productsPage, navigation, cartPage}) => {
-    await mainPage.expectLoaded()
     await navigation.redirectTo(NavItem.Products)
     const firstProduct = await productsPage.addProductToCartByIndex(0)
     await productsPage.continueShopping()

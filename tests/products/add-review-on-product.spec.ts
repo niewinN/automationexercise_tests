@@ -5,10 +5,10 @@ import { createUser } from "../../utils/user-factory";
 
 
 
-test('user can add review on product', async({mainPage, navigation, productsPage, productDetailsPage}) => {
+test('user can add review on product', async({navigation, productsPage, productDetailsPage}) => {
     const user = createUser()
     const review = faker.lorem.sentence()
-    await mainPage.expectLoaded()
+    
     await navigation.redirectTo(NavItem.Products)
     await productsPage.clickOnFirstViewProductLink()
     await productDetailsPage.expectReviewTitleLoaded()

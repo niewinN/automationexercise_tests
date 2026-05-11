@@ -35,12 +35,21 @@ type Fixtures = {
     checkoutPage: CheckoutPage;
     paymentPage: PaymentPage;
     randomCard: Card;
+    loadedMainPage: void;
 }
 
 export const test = base.extend<Fixtures>({
     mainPage: async ({page}, use) => {
         await use(new MainPage(page))
     },
+
+    loadedMainPage: [
+        async({mainPage}, use) => {
+            await mainPage.expectLoaded()
+            await use()
+        },
+        {auto: true}
+    ],
 
     loginPage: async ({page}, use) => {
         await use(new LoginPage(page))
