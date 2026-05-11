@@ -24,7 +24,6 @@ export class ProductsPage extends BasePage {
     readonly bibaBrand: Locator;
     readonly bibaHeading: Locator;
     readonly addToCartBtn: Locator;
-    // readonly viewProductBtn: Locator;
 
     constructor(page: Page) {
         super(page)
