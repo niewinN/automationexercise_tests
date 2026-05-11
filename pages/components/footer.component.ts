@@ -36,6 +36,5 @@ export class Footer extends BasePage {
         await this.expectSubscriptionSectionLoaded()
         await this.enterEmailToSubscribe(email)
         await this.expectSubscriptionSucces()
-        // return email
     }
 }

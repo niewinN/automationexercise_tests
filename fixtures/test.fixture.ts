@@ -36,6 +36,7 @@ type Fixtures = {
     paymentPage: PaymentPage;
     randomCard: Card;
     loadedMainPage: void;
+    blockAds: void;
 }
 
 export const test = base.extend<Fixtures>({
@@ -117,7 +118,34 @@ export const test = base.extend<Fixtures>({
     randomCard: async({}, use) => {
         const card = createCard()
         await use(card)
-    }
+    },
+
+    blockAds: [
+    async ({ page }, use) => {
+
+        await page.route('**/*', async route => {
+            const url = route.request().url()
+
+            const blockedDomains = [
+                'doubleclick.net',
+                'googlesyndication.com',
+                'googleadservices.com',
+                'adservice.google.com',
+                'googletagmanager.com',
+                'google-analytics.com'
+            ]
+
+            if (blockedDomains.some(domain => url.includes(domain))) {
+                await route.abort()
+            } else {
+                await route.continue()
+            }
+        })
+
+        await use()
+    },
+    { auto: true }
+],
 })
 
 export {expect};

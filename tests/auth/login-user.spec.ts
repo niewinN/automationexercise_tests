@@ -4,6 +4,7 @@ import { loginUserFlow } from "../../flows/login.flow"
 import { NavItem } from "../../pages/components/navigation.component"
 import { createUser } from "../../utils/user-factory"
 import { deleteAccountFlow } from "../../flows/delete-account.flow"
+import { completeCheckoutFlow } from "../../flows/checkout.flow"
 
 test.describe('Login user tests', () => {
     test('user can log in', async({mainPage, loginPage, successPage, registeredUser, navigation}) => {
@@ -23,11 +24,7 @@ test.describe('Login user tests', () => {
         await loginUserFlow(registeredUser, {mainPage, loginPage, navigation})
         await navigation.redirectTo(NavItem.Products)
         await productsPage.addTwoProductsAndContinue()
-        await navigation.redirectTo(NavItem.Cart)
-        await cartPage.proceedToCheckout()
-        await checkoutPage.addCommentAfterLoaded(desc)
-        await paymentPage.completePaymentFormAndPay(randomCard)
-        await successPage.successAndContinue('Order Placed!')
+        await completeCheckoutFlow(desc, randomCard, {navigation, cartPage, checkoutPage, paymentPage, successPage})
         await deleteAccountFlow({navigation, successPage})
     })
 })
